@@ -1,13 +1,14 @@
 import kotlinx.coroutines.*
+import kotlin.concurrent.thread
 
-fun main() = GlobalScope.launch {
+fun main() = runBlocking {
     // Step 1: default process, block other process
 //    println("long running process")
 //    Thread.sleep(1000L)
 //    println("process done")
 //    println("Hello...")
 
-    // Step 2a: using coroutine, can do other process
+    // Step 2a: using thread, can do other process
 //    thread { // fire and forget
 //        println("long running process")
 //        Thread.sleep(1000L)
@@ -30,11 +31,11 @@ fun main() = GlobalScope.launch {
 //    println("Hello...")
 
     // Step 4.a: using async to get result
-//    val result: Deferred<String> = async {
-//        doLongProcess()
-//    }
-//    println("Hello...")
-//    println(result.await())
+    val result: Deferred<String> = async {
+        doLongProcess()
+    }
+    println("Hello...")
+    println(result.await())
 
 
     // Step 5.a: using await + await
@@ -47,7 +48,7 @@ fun main() = GlobalScope.launch {
 //        println("Hello...")
 //        println(result.await() + " & " + result2.await())
 
-    // Step 6
+    // Step 6 create and cancel job
 //    val newJob = launch {
 //        doLongProcess()
 //    }
@@ -58,15 +59,15 @@ fun main() = GlobalScope.launch {
 //    }
 //    println("Hello...")
 
-    // Step 7
-    launch(Dispatchers.IO) {
-        println("long running process in ${Thread.currentThread().name}")
-        delay(1000L)
-        withContext(Dispatchers.Default){
-            println("process done in ${Thread.currentThread().name}")
-        }
-    }
-    println("Hello...")
+    // Step 7 switching dispatcher
+//    launch(Dispatchers.IO) {
+//        println("long running process in ${Thread.currentThread().name}")
+//        delay(1000L)
+//        withContext(Dispatchers.Default){
+//            println("process done in ${Thread.currentThread().name}")
+//        }
+//    }
+//    println("Hello...")
 }
 
 // Step 3.b
